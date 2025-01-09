@@ -13,7 +13,6 @@ const { app, server, io } = require("./lib/socket");
 dotenv.config();
 
 const port = process.env.PORT;
-const __dirname = path.resolve();
 
 app.use(express.json());
 app.use(cookieParser());
