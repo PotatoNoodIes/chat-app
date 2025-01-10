@@ -7,7 +7,8 @@ const verifyEmail = async (email) => {
       `https://api.hunter.io/v2/email-verifier?email=${email}&api_key=${key}`
     );
 
-    return res.data.data.result === "valid";
+    const status = res.data.data.status;
+    return status !== "invalid" && status !== "unknown";
   } catch (error) {
     console.error(error.message);
     return false;
