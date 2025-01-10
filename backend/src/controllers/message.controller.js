@@ -22,7 +22,6 @@ const getMessages = async (req, res) => {
   try {
     const { id: userToChatId } = req.params;
     const senderId = req.user._id;
-    console.log(senderId);
 
     const messages = await Message.find({
       $or: [

@@ -2,6 +2,7 @@ const generateToken = require("../lib/util");
 const cloudinary = require("../lib/cloduinary");
 const User = require("../models/user.model");
 const bcrypt = require("bcryptjs");
+const { verifyEmail } = require("../lib/emailVerify");
 
 const signup = async (req, res) => {
   const { fullName, email, password } = req.body;
@@ -13,6 +14,11 @@ const signup = async (req, res) => {
       return res
         .status(400)
         .json({ message: "Password must be at least 6 characters" });
+    }
+
+    const isEMailValid = await verifyEmail(email);
+    if (!isEMailValid) {
+      return res.status(400).json({ message: "Invalid email." });
     }
 
     const user = await User.findOne({ email });
@@ -50,22 +56,47 @@ const signup = async (req, res) => {
 };
 
 const login = async (req, res) => {
-  const { email, password } = req.body;
+  const { email, password, decoded } = req.body;
 
   try {
-    const user = await User.findOne({ email });
+    console.log(decoded);
+    if (!decoded) {
+      const user = await User.findOne({ email });
 
-    if (!user) {
-      return res.status(400).json({ message: "Invalid credentials" });
+      if (!user) {
+        return res.status(400).json({ message: "Invalid credentials" });
+      }
+
+      const isValidPassword = await bcrypt.compare(password, user.password);
+      if (!isValidPassword) {
+        return res.status(400).json({ message: "Invalid credentials" });
+      }
+
+      generateToken(user._id, res);
+
+      res.status(200).json({
+        _id: user._id,
+        fullName: user.fullName,
+        email: user.email,
+        profilePic: user.profilePic,
+        createdAt: user.createdAt,
+      });
     }
 
-    const isValidPassword = await bcrypt.compare(password, user.password);
-    if (!isValidPassword) {
-      return res.status(400).json({ message: "Invalid credentials" });
+    let user = await User.findOne({ email: decoded.email });
+
+    if (!user) {
+      const newUser = new User({
+        email: decoded.email,
+        password: decoded.jti,
+        fullName: decoded.name,
+        profilePic: decoded.picture,
+      });
+
+      user = await newUser.save();
     }
 
     generateToken(user._id, res);
-
     res.status(200).json({
       _id: user._id,
       fullName: user.fullName,
