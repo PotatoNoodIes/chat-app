@@ -51,7 +51,8 @@ const LoginPage = () => {
             <GoogleLogin
               onSuccess={handleOAuthLogin}
               theme="filled_blue"
-              shape="circle"
+              shape="pill"
+              size="medium"
               text="signin_with"
             />
 
