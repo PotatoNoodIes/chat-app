@@ -52,7 +52,7 @@ const LoginPage = () => {
               onSuccess={handleOAuthLogin}
               theme="filled_blue"
               shape="circle"
-              className="size-12 rounded-full p-0 overflow-hidden"
+              text="signin_with"
             />
 
             {/* Separator */}
