@@ -50,10 +50,21 @@ const LoginPage = () => {
             {/* Google Login Button */}
             <GoogleLogin
               onSuccess={handleOAuthLogin}
-              theme="filled_blue"
               shape="pill"
-              size="medium"
-              text="signin_with"
+              render={(renderProps) => (
+                <button
+                  onClick={renderProps.onClick}
+                  disabled={renderProps.disabled}
+                  className="w-full py-3 rounded-lg bg-primary text-white flex items-center justify-center gap-3 hover:bg-primary/80 transition duration-200"
+                >
+                  <img
+                    src="https://upload.wikimedia.org/wikipedia/commons/5/53/Google_%22G%22_Logo.svg"
+                    alt="Google logo"
+                    className="w-6 h-6"
+                  />
+                  <span>Sign in with Google</span>
+                </button>
+              )}
             />
 
             {/* Separator */}
