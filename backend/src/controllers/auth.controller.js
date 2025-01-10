@@ -59,7 +59,6 @@ const login = async (req, res) => {
   const { email, password, decoded } = req.body;
 
   try {
-    console.log(decoded);
     if (!decoded) {
       const user = await User.findOne({ email });
 

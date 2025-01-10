@@ -50,9 +50,9 @@ const LoginPage = () => {
             {/* Google Login Button */}
             <GoogleLogin
               onSuccess={handleOAuthLogin}
-              locale="zh_CN"
               theme="filled_blue"
               shape="circle"
+              className="size-12 rounded-full p-0 overflow-hidden"
             />
 
             {/* Separator */}
