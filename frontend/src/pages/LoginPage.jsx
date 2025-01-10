@@ -48,24 +48,17 @@ const LoginPage = () => {
             </div>
 
             {/* Google Login Button */}
-            <GoogleLogin
-              onSuccess={handleOAuthLogin}
-              shape="pill"
-              render={(renderProps) => (
-                <button
-                  onClick={renderProps.onClick}
-                  disabled={renderProps.disabled}
-                  className="w-full py-3 rounded-lg bg-primary text-white flex items-center justify-center gap-3 hover:bg-primary/80 transition duration-200"
-                >
-                  <img
-                    src="https://upload.wikimedia.org/wikipedia/commons/5/53/Google_%22G%22_Logo.svg"
-                    alt="Google logo"
-                    className="w-6 h-6"
-                  />
-                  <span>Sign in with Google</span>
-                </button>
-              )}
-            />
+            <div className="flex justify-center items-center h-screen bg-primary">
+              <div className="p-2 rounded-full bg-transparent">
+                <GoogleLogin
+                  onSuccess={handleOAuthLogin}
+                  theme="filled_blue"
+                  shape="pill"
+                  size="large"
+                  text="signin_with"
+                />
+              </div>
+            </div>
 
             {/* Separator */}
             <div className="flex items-center justify-center gap-2 text-sm text-gray-500 my-4">
