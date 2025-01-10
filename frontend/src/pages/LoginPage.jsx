@@ -50,7 +50,7 @@ const LoginPage = () => {
             {/* Google Login Button */}
             <div
               className="flex justify-center items-center"
-              style={{ colorscheme: "light" }}
+              style={{ colorScheme: "light" }}
             >
               <GoogleLogin
                 onSuccess={handleOAuthLogin}
@@ -58,6 +58,7 @@ const LoginPage = () => {
                 shape="pill"
                 size="large"
                 text="signin_with"
+                auto_select={false}
               />
             </div>
 
