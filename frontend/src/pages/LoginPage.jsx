@@ -48,16 +48,17 @@ const LoginPage = () => {
             </div>
 
             {/* Google Login Button */}
-            <div className="flex justify-center items-center h-screen bg-primary">
-              <div className="p-2 rounded-full bg-transparent">
-                <GoogleLogin
-                  onSuccess={handleOAuthLogin}
-                  theme="filled_blue"
-                  shape="pill"
-                  size="large"
-                  text="signin_with"
-                />
-              </div>
+            <div
+              className="flex justify-center items-center"
+              style={{ colorscheme: "light" }}
+            >
+              <GoogleLogin
+                onSuccess={handleOAuthLogin}
+                theme="filled_blue"
+                shape="pill"
+                size="large"
+                text="signin_with"
+              />
             </div>
 
             {/* Separator */}
