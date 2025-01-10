@@ -1,11 +1,13 @@
 import { useRef, useState } from "react";
 import { useChatStore } from "../store/useChatStore";
-import { Send, Image, X } from "lucide-react";
+import { Image, X, Smile, SendHorizonal } from "lucide-react";
+import EmojiPicker from "emoji-picker-react";
 import toast from "react-hot-toast";
 
 const MessageInput = () => {
   const [text, setText] = useState("");
   const [imagePreview, setImagePreview] = useState(null);
+  const [showEmojiPicker, setShowEmojiPicker] = useState(false);
   const { sendMessage } = useChatStore();
 
   const fileInputRef = useRef(null);
@@ -49,6 +51,12 @@ const MessageInput = () => {
       console.error("Failed to send message:", error);
     }
   };
+
+  const handleEmojiClick = (emojiData) => {
+    setText((prev) => prev + emojiData.emoji);
+    setShowEmojiPicker(false);
+  };
+
   return (
     <div className="p-4 w-full">
       {imagePreview && (
@@ -57,11 +65,11 @@ const MessageInput = () => {
             <img
               src={imagePreview}
               alt="Preview"
-              className="w-20 h-20 object-cover rounded-lg border border-zinc-700"
+              className="size-20 object-scale-down rounded-lg border border-zinc-700"
             />
             <button
               onClick={removeImage}
-              className="absolute -top-1.5 -right-1.5 w-5 h-5 rounded-full bg-base-300
+              className="absolute -top-1.5 -right-1.5 w-5 h-5 rounded-full bg-red-700
               flex items-center justify-center"
               type="button"
             >
@@ -70,16 +78,37 @@ const MessageInput = () => {
           </div>
         </div>
       )}
-
       <form onSubmit={handleSendMessage} className="flex items-center gap-2">
-        <div className="flex-1 flex gap-2">
-          <input
-            type="text"
-            className="w-full input input-bordered rounded-lg input-sm sm:input-md"
-            placeholder="Type a message..."
-            value={text}
-            onChange={(e) => setText(e.target.value)}
-          />
+        <div className="relative flex items-center w-full bg-transparent border rounded-lg p-2">
+          <button
+            type="button"
+            className="mr-2"
+            onClick={() => setShowEmojiPicker(!showEmojiPicker)}
+          >
+            <Smile size={24} />
+          </button>
+
+          {showEmojiPicker && (
+            <div className="absolute bottom-12 left-0 z-10 shadow-lg">
+              <EmojiPicker
+                onEmojiClick={handleEmojiClick}
+                emojiStyle="native"
+                theme="auto"
+              />
+            </div>
+          )}
+
+          {/* Input area with image preview */}
+          <div className="flex items-center flex-1 gap-2">
+            <input
+              type="text"
+              className="flex-1 outline-none border-none bg-transparent"
+              placeholder="Type a message..."
+              value={text}
+              onChange={(e) => setText(e.target.value)}
+            />
+          </div>
+
           <input
             type="file"
             accept="image/*"
@@ -87,21 +116,17 @@ const MessageInput = () => {
             ref={fileInputRef}
             onChange={handleImageChange}
           />
-          <button
-            type="button"
-            className={`hidden sm:flex btn btn-circle
-                     ${imagePreview ? "text-emerald-500" : "text-zinc-400"}`}
-            onClick={() => fileInputRef.current?.click()}
-          >
-            <Image size={20} />
+          <button type="button" onClick={() => fileInputRef.current?.click()}>
+            <Image size={24} />
           </button>
         </div>
+
         <button
           type="submit"
-          className="btn btn-sm btn-circle"
+          className="btn btn-primary px-3 py-2 text-sm"
           disabled={!text.trim() && !imagePreview}
         >
-          <Send size={22} />
+          <SendHorizonal size={24} />
         </button>
       </form>
     </div>
